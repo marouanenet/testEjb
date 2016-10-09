@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.custom.i18n.resources" value="message" />
+
+	<package name="testEjb-pkg" namespace="/" extends="struts-default">
+		<interceptors>
+			<interceptor name="checkLogin"
+				class="com.test.interceptors.CheckLoginInterceptor" />
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="checkLogin">
+				</interceptor-ref>
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*,^session\..*,^request\..*,^application\..*,^servlet(Request|Response)\..*,parameters\...*</param>
+				</interceptor-ref>
+				<interceptor-ref name="validation">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack" />
+
+		<global-results>
+			<result name="sessionPerdu">/jsp/login.jsp</result>
+		</global-results>
+
+		<action name="contacts" class="com.test.action.ContactAction"
+			method="contacts">
+			<result name="success">/jsp/contact.jsp</result>
+		</action>
+		<action name="login" class="com.test.action.LoginAction"
+			method="login">
+			<result name="success" type="redirect">/</result>
+			<result name="input">/jsp/login.jsp</result>
+		</action>
+		<action name="logout" class="com.test.action.LoginAction"
+			method="logout">
+			<result name="success">/jsp/login.jsp</result>
+			<result name="input">/jsp/login.jsp</result>
+		</action>
+		<action name="add" class="com.test.action.ContactAction"
+			method="add">
+			<result name="success" type="redirect">/contacts</result>
+			<result name="input">/jsp/contact.jsp</result>
+		</action>
+		<action name="delete" class="com.test.action.ContactAction"
+			method="delete">
+			<result name="success" type="redirect">/contacts</result>
+		</action>
+
+		<action name="repertoires" class="com.test.action.RepertoireAction"
+			method="repertoires">
+			<result name="success">/jsp/repertoire.jsp</result>
+		</action>
+		<action name="addRepertoire" class="com.test.action.RepertoireAction"
+			method="add">
+			<result name="success" type="redirect">/repertoires</result>
+			<result name="input">/jsp/repertoire.jsp</result>
+		</action>
+		<action name="deleteRepertoire" class="com.test.action.RepertoireAction"
+			method="delete">
+			<result name="success" type="redirect">/repertoires</result>
+		</action>
+	</package>
+
+</struts>
